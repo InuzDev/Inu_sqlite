@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -8,13 +10,14 @@ typedef struct
 {
    char *buffer;
    size_t buffer_length;
-   ssize_t input_lenth;
+   ssize_t input_length;
 } InputBuffer;
 
 // Function prototypes
 InputBuffer *new_input_buffer();
 void print_prompt();
 void read_input(InputBuffer *input_buffer);
+void close_input_buffer(InputBuffer *input_buffer);
 
 int main(int argc, char *argv[])
 {
@@ -37,19 +40,39 @@ int main(int argc, char *argv[])
    }
 }
 
+/**
+ * Function: read_input
+ * Objective: Read the user input, check if it is a valid command too
+ * Arguments: (InputBuffer) *input_buffer
+ */
 void read_input(InputBuffer *input_buffer)
 {
-   ssize_t bytes_read = getline(&(input_buffer->buffer), &(input_buffer->buffer_length), stdin);
-
-   if (bytes_read <= 0)
+   if (fgets(input_buffer->buffer, input_buffer->buffer_length, stdin) == NULL)
    {
       printf("Error reading input\n");
       exit(EXIT_FAILURE);
    }
 
-   // Ignore trailing newline
-   input_buffer->input_lenth = bytes_read - 1;
-   input_buffer->buffer[bytes_read - 1] = 0;
+   // Compute length of the line read
+   input_buffer->input_length = strlen(input_buffer->buffer);
+
+   // remove newline if present
+   if (input_buffer->input_length > 0 && input_buffer->buffer[input_buffer->input_length - 1] == '\n')
+   {
+      input_buffer->buffer[input_buffer->input_length - 1] = '\0';
+      input_buffer->input_length--;
+   }
+}
+
+/**
+ * Function: close_input_buffer
+ * Objective: Release the memory and close the input buffer
+ * Arguments: (InputBuffer) *input_buffer
+ */
+void close_input_buffer(InputBuffer *input_buffer)
+{
+   free(input_buffer->buffer);
+   free(input_buffer);
 }
 
 /**
@@ -72,9 +95,9 @@ InputBuffer *new_input_buffer()
 {
    InputBuffer *input_buffer = (InputBuffer *)malloc(sizeof(InputBuffer));
 
-   input_buffer->buffer = NULL;
-   input_buffer->buffer_length = 0;
-   input_buffer->input_lenth = 0;
+   input_buffer->buffer_length = 1024;
+   input_buffer->buffer = malloc(input_buffer->buffer_length);
+   input_buffer->input_length = 0;
 
    return input_buffer;
 }
