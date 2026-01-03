@@ -1,2 +1,4 @@
 # Executable code
 *.exe
+# Configuration folders
+.*

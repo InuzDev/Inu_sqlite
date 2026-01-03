@@ -1,10 +1,8 @@
 #include <stdio.h>
+#include <sys/types.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-
-#define TRUE 1
-#define FALSE 0
 
 typedef struct
 {
@@ -23,7 +21,7 @@ int main(int argc, char *argv[])
 {
    InputBuffer *input_buffer = new_input_buffer();
 
-   while (TRUE)
+   while (true)
    {
       print_prompt();
       read_input(input_buffer);
