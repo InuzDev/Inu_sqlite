@@ -1,3 +1,9 @@
+/*
+ * My your own X - Simple database in C
+ *
+ * Charles David , File: Main.c
+ */
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,6 +19,8 @@ typedef enum {
   META_COMMAND_SUCCESS,
   META_COMMAND_UNRECOGNIZED
 } MetaCommandResult;
+
+typedef enum { PREPARE_RESULT, PREPARE_UNRECOGNIZED_STATEMENT } PrepareResult;
 
 // Function prototypes
 MetaCommandResult do_meta_command(InputBuffer *input_buffer);
@@ -97,6 +105,7 @@ InputBuffer *new_input_buffer() {
   return input_buffer;
 }
 
+// Document this function:
 MetaCommandResult do_meta_command(InputBuffer *input_buffer) {
   if (strcmp(input_buffer->buffer, ".exit") == 0) {
     exit(EXIT_SUCCESS);

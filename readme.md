@@ -38,9 +38,25 @@ To use mingGW, we just do this:
 1. Extract the downloaded MinGW archive to a directory of your choice.
 2. Add the MinGW bin directory to your system PATH environment variable.
 
-If you want to try and modify my code, you likely done the hard part, now just open the ".c" file and start editing.
-To run the program, you can compile the program:
+## Compile the program
 
+After you downloaded a compiler, you need to configure clang, if you already did, you can skip the process.
+
+In my case, I had to specify and format the code.
+
+In my case, this are my configuration. To install clang in your computer, run the following command in the terminal:
+
+> With Scoop:
 ```sh
-gcc -std=gnu99 -o myOwn_sqlite.exe main.c
+scoop install llvm
+```
+
+```clangd
+CompileFlags:
+  Add:
+    - -std=gnu99
+    - -target
+    - x86_64-w64-windows-gnu
+    - -IC:/Users/{user}/scoop/apps/gcc/current/include
+    - -IC:/Users/{user}/scoop/apps/gcc/current/x86_64-w64-mingw32/include
 ```
