@@ -60,3 +60,17 @@ CompileFlags:
     - -IC:/Users/{user}/scoop/apps/gcc/current/include
     - -IC:/Users/{user}/scoop/apps/gcc/current/x86_64-w64-mingw32/include
 ```
+
+I actually use a custom format, so if you want to, check out the .clang-format
+
+```clang-format
+BasedOnStyle: LLVM
+IndentWidth: 3
+UseTab: Never
+BreakBeforeBraces: Attach
+AllowShortFunctionsOnASingleLine: none
+ColumnLimit: 100
+DerivePointerAlignment: true
+```
+After this, everything should be set and ready to go
+> If you have any issue, please report them the the issue. Please be clear as possible.
