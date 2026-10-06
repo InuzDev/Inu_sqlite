@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -std=gnu99 -Wall -Wextra
 
-TARGET = sqlite_clone
+TARGET = sqlite-clone
 SRC = main.c
 
 all:
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
+	$(CC) $(CFLAGS) $(SRC) -o $(TARGET) && .\sqlite-clone
