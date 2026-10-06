@@ -20,6 +20,7 @@ If you downloaded, proceed with the installation process. For [msys2](#msys2) in
    ```sh
    pacman -Syu
    ```
+  > Make sure to restart the terminal after running this command.
 3. Install the required packages by running the following command:
    ```sh
    pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-clang
@@ -36,11 +37,62 @@ If you downloaded, proceed with the installation process. For [msys2](#msys2) in
 To use mingGW, we just do this:
 
 1. Extract the downloaded MinGW archive to a directory of your choice.
-2. Add the MinGW bin directory to your system PATH environment variable.
+2. Add the MinGW bin directory to your system PATH environment variable. The directory could be `C:\msys64\mingw64\bin`
 
-If you want to try and modify my code, you likely done the hard part, now just open the ".c" file and start editing.
-To run the program, you can compile the program:
+## Compile the program
 
+After you downloaded a compiler, you need to configure clang, if you already did, you can skip the process.
+
+In my case, I had to specify and format the code.
+
+In my case, this are my configuration. To install clang in your computer, run the following command in the terminal:
+
+> With Scoop:
 ```sh
-gcc -std=gnu99 -o myOwn_sqlite.exe main.c
+scoop install llvm
 ```
+
+```clangd
+CompileFlags:
+  Add:
+    - -std=gnu99
+    - -target
+    - x86_64-w64-windows-gnu
+    - -IC:/Users/{user}/scoop/apps/gcc/current/include
+    - -IC:/Users/{user}/scoop/apps/gcc/current/x86_64-w64-mingw32/include
+```
+
+I actually use a custom format, so if you want to, check out the .clang-format
+
+```clang-format
+BasedOnStyle: LLVM
+IndentWidth: 3
+UseTab: Never
+BreakBeforeBraces: Attach
+AllowShortFunctionsOnASingleLine: none
+ColumnLimit: 100
+DerivePointerAlignment: true
+```
+After this, everything should be set and ready to go
+> If you have any issue, please report them the the issue. Please be clear as possible.
+
+## Creating a MakeFile
+
+For this, you create a file named `MakeFile` in the root of the project.
+
+You need to specify the flags, source and the output.
+
+In this case I made the following:
+
+```
+CC = gcc
+CFLAGS = -std=gnu99 -Wall -Wextra
+
+TARGET = sqlite-clone
+SRC = main.c
+
+all:
+  $(CC) $(CFLAGS) $(SRC) -o $(TARGET)
+```
+
+You can then run `make` in the terminal.
